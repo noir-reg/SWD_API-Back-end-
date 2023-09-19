@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
-namespace SWD_API.Repository.Models
+namespace SWD_API.Models
 {
     public partial class SWDProjectContext : DbContext
     {
@@ -72,6 +71,8 @@ namespace SWD_API.Repository.Models
                 entity.ToTable("Attendance");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description).HasColumnType("text");
 
                 entity.Property(e => e.InternWorkShiftId).HasColumnName("InternWorkShift_Id");
 
@@ -180,6 +181,10 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.EndDate).HasColumnType("date");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
@@ -193,7 +198,13 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Project>(entity =>
@@ -201,6 +212,10 @@ namespace SWD_API.Repository.Models
                 entity.ToTable("Project");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Description).HasColumnType("text");
 
@@ -252,7 +267,13 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<WorkShift>(entity =>

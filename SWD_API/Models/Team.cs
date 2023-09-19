@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SWD_API.Repository.Models
+namespace SWD_API.Models
 {
-    public partial class University
+    public partial class Team
     {
-        public University()
+        public Team()
         {
             Interns = new HashSet<Intern>();
         }
 
         public Guid Id { get; set; }
         public string? Name { get; set; }
+        public int? QuantityOfMember { get; set; }
+        public Guid? TeamLeaderId { get; set; }
 
+        public virtual TeamLeader? TeamLeader { get; set; }
         public virtual ICollection<Intern> Interns { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-namespace SWD_Api
+namespace SWD_API
 {
     public class WeatherForecast
     {

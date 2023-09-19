@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SWD_API.Repository.Models
+namespace SWD_API.Models
 {
     public partial class Admin
     {
