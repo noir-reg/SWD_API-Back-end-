@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
  
 using SWD_API.Enums;
-using SWD_API.Repository.Models;
+using SWD_API.Models;
+using SWD_API.Repository;
 namespace SWD_API.Controllers;
 
 
@@ -11,7 +12,7 @@ namespace SWD_API.Controllers;
 [Route("api/universities")]
 public class UniversityController : ControllerBase {
 
-    readonly SWDProjectContext _projectContext= new();   
+    readonly SWDProjectContext _projectContext = new();   
     [HttpGet]
     [Route("count")]
     public int Count()

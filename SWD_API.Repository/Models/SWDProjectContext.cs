@@ -34,7 +34,7 @@ namespace SWD_API.Repository.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
- 
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer(GetConnectionString());
             }
         }
@@ -72,6 +72,8 @@ namespace SWD_API.Repository.Models
                 entity.ToTable("Attendance");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description).HasColumnType("text");
 
                 entity.Property(e => e.InternWorkShiftId).HasColumnName("InternWorkShift_Id");
 
@@ -180,6 +182,10 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.EndDate).HasColumnType("date");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
@@ -193,7 +199,13 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Project>(entity =>
@@ -201,6 +213,10 @@ namespace SWD_API.Repository.Models
                 entity.ToTable("Project");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Description).HasColumnType("text");
 
@@ -252,7 +268,13 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<WorkShift>(entity =>
