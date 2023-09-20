@@ -13,6 +13,7 @@ namespace SWD_API.Repository.Models
         public Guid Id { get; set; }
         public Guid? WorkShiftId { get; set; }
         public Guid? InternId { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
         public virtual Intern? Intern { get; set; }
         public virtual WorkShift? WorkShift { get; set; }

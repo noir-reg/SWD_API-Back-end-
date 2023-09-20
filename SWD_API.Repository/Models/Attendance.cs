@@ -9,6 +9,7 @@ namespace SWD_API.Repository.Models
         public Guid? InternWorkShiftId { get; set; }
         public bool? Status { get; set; }
         public string? Description { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
         public virtual InternWorkShift? InternWorkShift { get; set; }
     }

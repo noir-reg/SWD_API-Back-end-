@@ -16,6 +16,7 @@ namespace SWD_API.Repository.Models
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? Status { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
         public virtual ICollection<Intern> Interns { get; set; }
     }

@@ -22,6 +22,8 @@ namespace SWD_API.Repository.Models
         public string? Role { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
+        public bool? Status { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
         public virtual InternshipSemester? InternshipSemester { get; set; }
         public virtual Major? Major { get; set; }

@@ -60,11 +60,15 @@ namespace SWD_API.Repository.Models
                     .HasColumnType("date")
                     .HasColumnName("DOB");
 
+                entity.Property(e => e.Email).HasMaxLength(50);
+
                 entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.Role)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Attendance>(entity =>
@@ -76,6 +80,8 @@ namespace SWD_API.Repository.Models
                 entity.Property(e => e.Description).HasColumnType("text");
 
                 entity.Property(e => e.InternWorkShiftId).HasColumnName("InternWorkShift_Id");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.HasOne(d => d.InternWorkShift)
                     .WithMany(p => p.Attendances)
@@ -113,6 +119,8 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.UniversityId).HasColumnName("University_Id");
 
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
                 entity.HasOne(d => d.InternshipSemester)
                     .WithMany(p => p.Interns)
                     .HasForeignKey(d => d.InternshipSemesterId)
@@ -144,6 +152,8 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.ProjectId).HasColumnName("Project_Id");
 
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
                 entity.HasOne(d => d.Intern)
                     .WithMany(p => p.InternProjectMappings)
                     .HasForeignKey(d => d.InternId)
@@ -162,6 +172,8 @@ namespace SWD_API.Repository.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.InternId).HasColumnName("Intern_Id");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.WorkShiftId).HasColumnName("WorkShift_Id");
 
@@ -191,6 +203,8 @@ namespace SWD_API.Repository.Models
                 entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Major>(entity =>
@@ -220,7 +234,13 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Description).HasColumnType("text");
 
+                entity.Property(e => e.EndDate).HasColumnType("date");
+
                 entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Team>(entity =>
@@ -229,9 +249,15 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.TeamLeaderId).HasColumnName("TeamLeader_Id");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.HasOne(d => d.TeamLeader)
                     .WithMany(p => p.Teams)
@@ -260,6 +286,8 @@ namespace SWD_API.Repository.Models
                 entity.Property(e => e.Role)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<University>(entity =>
@@ -288,6 +316,8 @@ namespace SWD_API.Repository.Models
                 entity.Property(e => e.Description).HasColumnType("text");
 
                 entity.Property(e => e.TeamId).HasColumnName("Team_Id");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);

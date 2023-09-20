@@ -1,24 +1,22 @@
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
- 
 using SWD_API.Enums;
-using SWD_API.Models;
 using SWD_API.Repository;
+using SWD_API.Services;
+
 namespace SWD_API.Controllers;
 
 
 [ApiController]
 [Route("api/universities")]
-public class UniversityController : ControllerBase {
-
-    readonly SWDProjectContext _projectContext = new();   
+public class UniversityController : ControllerBase
+{
+    private IUniversityServices service = new UniversityServices();
     [HttpGet]
     [Route("count")]
-    public int Count()
+    public int CountUniversities()
     {
-       
-       int count= _projectContext.Universities.Count();
+        int count = service.Count();
         return count;
     }
 }

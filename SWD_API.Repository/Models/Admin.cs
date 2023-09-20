@@ -10,5 +10,7 @@ namespace SWD_API.Repository.Models
         public DateTime? Dob { get; set; }
         public bool? Gender { get; set; }
         public string? Role { get; set; }
+        public string? Email { get; set; }
+        public DateTime? UpdateTime { get; set; }
     }
 }
