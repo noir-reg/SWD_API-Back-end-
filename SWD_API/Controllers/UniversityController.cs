@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SWD_API.Enums;
 using SWD_API.Repository;
@@ -11,12 +12,14 @@ namespace SWD_API.Controllers;
 [Route("api/universities")]
 public class UniversityController : ControllerBase
 {
-    private IUniversityServices service = new UniversityServices();
+    private readonly IUniversityServices _service = new UniversityServices();
+
+    [Authorize(Roles =RoleConst.Admin)]
     [HttpGet]
     [Route("count")]
     public int CountUniversities()
     {
-        int count = service.Count();
+        int count = _service.Count();
         return count;
     }
 }
