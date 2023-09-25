@@ -17,7 +17,10 @@ namespace SWD_API.Repository.Models
         public DateTime? Date { get; set; }
         public string? Description { get; set; }
         public DateTime? UpdateTime { get; set; }
+        public Guid? ProjectId { get; set; }
 
+        public virtual Project? Project { get; set; }
+        public virtual Team? Team { get; set; }
         public virtual ICollection<InternWorkShift> InternWorkShifts { get; set; }
     }
 }

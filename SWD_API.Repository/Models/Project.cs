@@ -8,6 +8,7 @@ namespace SWD_API.Repository.Models
         public Project()
         {
             InternProjectMappings = new HashSet<InternProjectMapping>();
+            WorkShifts = new HashSet<WorkShift>();
         }
 
         public Guid Id { get; set; }
@@ -20,5 +21,6 @@ namespace SWD_API.Repository.Models
         public DateTime? UpdateTime { get; set; }
 
         public virtual ICollection<InternProjectMapping> InternProjectMappings { get; set; }
+        public virtual ICollection<WorkShift> WorkShifts { get; set; }
     }
 }

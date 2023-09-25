@@ -7,6 +7,7 @@ namespace SWD_API.Repository.Models
     {
         public Intern()
         {
+            Attendances = new HashSet<Attendance>();
             InternProjectMappings = new HashSet<InternProjectMapping>();
             InternWorkShifts = new HashSet<InternWorkShift>();
         }
@@ -29,6 +30,7 @@ namespace SWD_API.Repository.Models
         public virtual Major? Major { get; set; }
         public virtual Team? Team { get; set; }
         public virtual University? University { get; set; }
+        public virtual ICollection<Attendance> Attendances { get; set; }
         public virtual ICollection<InternProjectMapping> InternProjectMappings { get; set; }
         public virtual ICollection<InternWorkShift> InternWorkShifts { get; set; }
     }

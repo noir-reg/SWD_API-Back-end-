@@ -17,7 +17,6 @@ namespace SWD_API.Repository.Models
         {
         }
 
-        public virtual DbSet<Admin> Admins { get; set; } = null!;
         public virtual DbSet<Attendance> Attendances { get; set; } = null!;
         public virtual DbSet<Intern> Interns { get; set; } = null!;
         public virtual DbSet<InternProjectMapping> InternProjectMappings { get; set; } = null!;
@@ -26,8 +25,8 @@ namespace SWD_API.Repository.Models
         public virtual DbSet<Major> Majors { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<Team> Teams { get; set; } = null!;
-        public virtual DbSet<TeamLeader> TeamLeaders { get; set; } = null!;
         public virtual DbSet<University> Universities { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<WorkShift> WorkShifts { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -50,43 +49,26 @@ namespace SWD_API.Repository.Models
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Admin>(entity =>
-            {
-                entity.ToTable("Admin");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Dob)
-                    .HasColumnType("date")
-                    .HasColumnName("DOB");
-
-                entity.Property(e => e.Email).HasMaxLength(50);
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.Role)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<Attendance>(entity =>
             {
                 entity.ToTable("Attendance");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.CheckIn).HasColumnType("datetime");
+
+                entity.Property(e => e.CheckOut).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasColumnType("text");
 
-                entity.Property(e => e.InternWorkShiftId).HasColumnName("InternWorkShift_Id");
+                entity.Property(e => e.InterId).HasColumnName("Inter_Id");
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
-                entity.HasOne(d => d.InternWorkShift)
+                entity.HasOne(d => d.Inter)
                     .WithMany(p => p.Attendances)
-                    .HasForeignKey(d => d.InternWorkShiftId)
-                    .HasConstraintName("FK_Attendance_InternWorkShift");
+                    .HasForeignKey(d => d.InterId)
+                    .HasConstraintName("FK_Attendance_Intern");
             });
 
             modelBuilder.Entity<Intern>(entity =>
@@ -170,6 +152,10 @@ namespace SWD_API.Repository.Models
                 entity.ToTable("InternWorkShift");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.CheckIn).HasColumnType("datetime");
+
+                entity.Property(e => e.CheckOut).HasColumnType("datetime");
 
                 entity.Property(e => e.InternId).HasColumnName("Intern_Id");
 
@@ -265,9 +251,24 @@ namespace SWD_API.Repository.Models
                     .HasConstraintName("FK_Team_TeamLeader");
             });
 
-            modelBuilder.Entity<TeamLeader>(entity =>
+            modelBuilder.Entity<University>(entity =>
             {
-                entity.ToTable("TeamLeader");
+                entity.ToTable("University");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("User");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
@@ -290,21 +291,6 @@ namespace SWD_API.Repository.Models
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<University>(entity =>
-            {
-                entity.ToTable("University");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Code)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<WorkShift>(entity =>
             {
                 entity.ToTable("WorkShift");
@@ -315,9 +301,21 @@ namespace SWD_API.Repository.Models
 
                 entity.Property(e => e.Description).HasColumnType("text");
 
+                entity.Property(e => e.ProjectId).HasColumnName("Project_Id");
+
                 entity.Property(e => e.TeamId).HasColumnName("Team_Id");
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.WorkShifts)
+                    .HasForeignKey(d => d.ProjectId)
+                    .HasConstraintName("FK_WorkShift_Project");
+
+                entity.HasOne(d => d.Team)
+                    .WithMany(p => p.WorkShifts)
+                    .HasForeignKey(d => d.TeamId)
+                    .HasConstraintName("FK_WorkShift_Team");
             });
 
             OnModelCreatingPartial(modelBuilder);

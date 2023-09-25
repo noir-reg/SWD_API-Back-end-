@@ -8,6 +8,7 @@ namespace SWD_API.Repository.Models
         public Team()
         {
             Interns = new HashSet<Intern>();
+            WorkShifts = new HashSet<WorkShift>();
         }
 
         public Guid Id { get; set; }
@@ -17,7 +18,8 @@ namespace SWD_API.Repository.Models
         public string? Code { get; set; }
         public DateTime? UpdateTime { get; set; }
 
-        public virtual TeamLeader? TeamLeader { get; set; }
+        public virtual User? TeamLeader { get; set; }
         public virtual ICollection<Intern> Interns { get; set; }
+        public virtual ICollection<WorkShift> WorkShifts { get; set; }
     }
 }
