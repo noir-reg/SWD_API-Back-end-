@@ -19,11 +19,11 @@ namespace SWD_API.Repository.Models
         public Guid? InternshipSemesterId { get; set; }
         public Guid? TeamId { get; set; }
         public DateTime? Dob { get; set; }
-        public bool? Gender { get; set; }
+        public int? Gender { get; set; }
         public string? Role { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
-        public bool? Status { get; set; }
+        public int? Status { get; set; }
         public DateTime? UpdateTime { get; set; }
 
         public virtual InternshipSemester? InternshipSemester { get; set; }

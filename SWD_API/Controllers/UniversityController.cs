@@ -12,14 +12,19 @@ namespace SWD_API.Controllers;
 [Route("api/universities")]
 public class UniversityController : ControllerBase
 {
-    private readonly IUniversityServices _service = new UniversityServices();
+    private readonly IUniversityServices _service;
+     public UniversityController(IUniversityServices service)
+    {
+        _service = service;
+    }
 
+    // [AllowAnonymous]
     [Authorize(Roles =RoleConst.Admin)]
     [HttpGet]
     [Route("count")]
-    public int CountUniversities()
+    public ActionResult CountUniversities()
     {
-        int count = _service.Count();
-        return count;
+        var count = _service.Count();
+        return Ok(count);
     }
 }

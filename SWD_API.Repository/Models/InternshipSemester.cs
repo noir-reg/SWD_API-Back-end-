@@ -15,7 +15,7 @@ namespace SWD_API.Repository.Models
         public string? Code { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool? Status { get; set; }
+        public int? Status { get; set; }
         public DateTime? UpdateTime { get; set; }
 
         public virtual ICollection<Intern> Interns { get; set; }
