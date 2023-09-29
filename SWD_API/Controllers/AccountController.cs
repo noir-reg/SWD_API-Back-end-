@@ -1,7 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using SWD_API.Enums;
+using SWD_API.Payload.Request.Account;
 using SWD_API.Repository;
 using SWD_API.Services;
 
@@ -12,7 +14,7 @@ namespace SWD_API.Controllers;
 [Route("api/accounts")]
 public class AccountController : ControllerBase
 {
-    private readonly IAccountServices _service  ;
+    private readonly IAccountServices _service;
 
     public AccountController(IAccountServices service)
     {
@@ -20,12 +22,11 @@ public class AccountController : ControllerBase
     }
 
     [AllowAnonymous]
-
-    [HttpGet]
+    [HttpPost]
     [Route("login")]
-    public ActionResult Login(string email)
+    public async Task<IActionResult> Login([FromBody] string email)
     {
-        var result = _service.Login(email);
+        var result = await _service.Login(email);
         if (result == null)
         {
             return Unauthorized(new
@@ -35,7 +36,7 @@ public class AccountController : ControllerBase
                 TimeStamp = DateTime.Now
             });
         }
-        if (result.Status==AccountStatusConst.Inacctive )
+        if (result.Status == AccountStatusConst.Inacctive)
         {
             return Unauthorized(new
             {
@@ -45,5 +46,25 @@ public class AccountController : ControllerBase
             });
         }
         return Ok(result);
+    }
+    [AllowAnonymous]
+    [HttpPost]
+    [Route("detail")]
+    public async Task<IActionResult> GetAccountDetail(GetAccountRequest getAccountRequest)
+    {
+        var result = await _service.GetAcccountDetail(getAccountRequest);
+
+        return Ok(result);
+
+    }
+    [Authorize(Roles = RoleConst.Admin + "," + RoleConst.TeamLeader)]
+    [HttpPatch]
+    [Route("status/update")]
+    public async Task<IActionResult> UpdateAccountStatus(UpdateAccountStatusRequest updateAccountStatusRequest)
+    {
+        var result = await _service.UpdateAccountStatus(updateAccountStatusRequest);
+        if (result)
+            return Ok(result);
+        return Ok("Fail to update account status");
     }
 }
