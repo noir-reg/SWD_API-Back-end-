@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SWD_API.Enums;
 using SWD_API.Services;
 
 namespace SWD_API.Controllers
@@ -17,6 +19,7 @@ namespace SWD_API.Controllers
             _projectRepo = projectRepo;
         }
 
+        [Authorize(Roles = RoleConst.TeamLeader + "," + RoleConst.Intern)]
         [HttpGet]
         public IActionResult getAll()
         {
@@ -30,6 +33,7 @@ namespace SWD_API.Controllers
             }
         }
 
+        [Authorize(Roles = RoleConst.TeamLeader + "," + RoleConst.Intern)]
         [HttpGet("{id}")]
         public IActionResult GetById(string id)
         {
