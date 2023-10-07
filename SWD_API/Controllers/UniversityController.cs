@@ -24,9 +24,9 @@ public class UniversityController : ControllerBase
     //[Authorize(Roles =RoleConst.Admin)]
     [HttpGet]
     [Route("count")]
-    public ActionResult CountUniversities()
+    public async Task<ActionResult> CountUniversities()
     {
-        var count = _service.Count();
+        var count =  await _service.Count();
         return Ok(count);
     }
 

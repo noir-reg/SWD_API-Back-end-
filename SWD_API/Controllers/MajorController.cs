@@ -8,7 +8,7 @@ using SWD_API.Services;
 
 namespace SWD_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/majors")]
     [ApiController]
     public class MajorController : ControllerBase
     {

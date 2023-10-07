@@ -9,6 +9,7 @@ namespace SWD_API.Services
         public Task <LoginResponse>? Login(string email);
         public Task< GetAccountResponse>? GetAcccountDetail(GetAccountRequest getAccountRequest);
         public Task<bool> UpdateAccountStatus(UpdateAccountStatusRequest updateAcccountStatusRequest);
+        public Task<bool> UpdateInternInfor(UpdateInternInforRequest updateInternInforRequest);
 
     }
 }

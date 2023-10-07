@@ -13,6 +13,8 @@ namespace WebApplication1
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddSingleton<IAccountServices, AccountServices>();
+            builder.Services.AddSingleton<IUniversityServices, UniversityServices>();
             builder.Services.AddScoped<IAccountServices,AccountServices>();
             builder.Services.AddScoped<IUniversityServices,UniversityServices>();
             builder.Services.AddScoped<IProjectRepo, ProjectRepo>();

@@ -103,7 +103,7 @@ namespace SWD_API.Services
         {
             var intern = await _db.Interns.Where(x => x.Email.Equals(email)).Include(x => x.University).Include(x => x.Major)
                 .Include(x => x.Team).Include(x => x.InternshipSemester).FirstOrDefaultAsync();
-            var user =await _db.Users.Where(x => x.Email.Equals(email)).FirstOrDefaultAsync();
+            var user = await _db.Users.Where(x => x.Email.Equals(email)).FirstOrDefaultAsync();
             if (intern != null)
             {
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -201,12 +201,12 @@ namespace SWD_API.Services
         {
             if (updateAcccountStatusRequest.Role.Equals(RoleConst.Intern, StringComparison.OrdinalIgnoreCase))
             {
-                var intern =await _db.Interns.Where(x => x.Id.Equals(updateAcccountStatusRequest.Id)).FirstOrDefaultAsync();
+                var intern = await _db.Interns.Where(x => x.Id.Equals(updateAcccountStatusRequest.Id)).FirstOrDefaultAsync();
                 if (intern != null)
                 {
                     intern.Status = updateAcccountStatusRequest.Status;
-                    
-                    var result = _db.SaveChanges();
+
+                    var result = await _db.SaveChangesAsync();
                     if (result > 0)
                         return true;
                     else return false;
@@ -218,24 +218,50 @@ namespace SWD_API.Services
             }
             else
             {
-                var user =await _db.Users.Where(x => x.Id.Equals(updateAcccountStatusRequest.Id)).FirstOrDefaultAsync();
-                 
-                    
-                    if (user != null)
-                    {
-                        user.Status = updateAcccountStatusRequest.Status;
-                        
-                        var result = _db.SaveChanges();
-                        if (result > 0)
-                            return true;
-                        else return false;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-               
+                var user = await _db.Users.Where(x => x.Id.Equals(updateAcccountStatusRequest.Id)).FirstOrDefaultAsync();
+
+
+                if (user != null)
+                {
+                    user.Status = updateAcccountStatusRequest.Status;
+
+                    var result = await _db.SaveChangesAsync();
+                    if (result > 0)
+                        return true;
+                    else return false;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
+        }
+
+        public async Task<bool> UpdateInternInfor(UpdateInternInforRequest updateInternInforRequest)
+        {
+            var intern = await _db.Interns.Where(x => x.Id.Equals(updateInternInforRequest.Id)).FirstOrDefaultAsync();
+            if (intern != null)
+            {
+                var newName = updateInternInforRequest.FullName.IsNullOrEmpty() ? intern.FullName : updateInternInforRequest.FullName;
+                var newUniversityId = updateInternInforRequest.UniversityId.IsNullOrEmpty() ? intern.UniversityId :Guid.Parse( updateInternInforRequest.UniversityId);
+                var newDOB = updateInternInforRequest.DOB.IsNullOrEmpty() ? intern.Dob : DateTime.Parse(updateInternInforRequest.DOB);
+                var newGender = updateInternInforRequest.Gender.IsNullOrEmpty() ? intern.Gender : int.Parse( updateInternInforRequest.Gender);
+                var newPhoneNumber = updateInternInforRequest.PhoneNumber.IsNullOrEmpty() ? intern.PhoneNumber : updateInternInforRequest.PhoneNumber;
+                var newMajorId = updateInternInforRequest.MajorId.IsNullOrEmpty() ? intern.MajorId : Guid.Parse(updateInternInforRequest.MajorId);
+                intern.FullName = newName;
+                intern.UniversityId = newUniversityId;
+                intern.Dob = newDOB;
+                intern.Gender = newGender;
+                intern.PhoneNumber = newPhoneNumber;
+                intern.MajorId = newMajorId;
+                var result = await _db.SaveChangesAsync();
+
+                return true;
+
+            }
+            return false;
+
         }
     }
 }

@@ -6,8 +6,8 @@ using SWD_API.Services;
 
 namespace SWD_API.Controllers
 {
-    [Route("api/[controller]")]   
-    //[Route("api/projects")]
+    
+    [Route("api/projects")]
     [ApiController]
 
     public class ProjectController : ControllerBase

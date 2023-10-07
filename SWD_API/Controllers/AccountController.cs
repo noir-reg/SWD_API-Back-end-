@@ -67,4 +67,15 @@ public class AccountController : ControllerBase
             return Ok(result);
         return Ok("Fail to update account status");
     }
+    [Authorize(Roles = RoleConst.Intern)]
+    [HttpPatch]
+    [Route("intern/update")]
+    public async Task<IActionResult> UpdateInternInfor(UpdateInternInforRequest updateInternInforRequest) { 
+        var result= await _service.UpdateInternInfor(updateInternInforRequest);
+        if(result)
+        return Ok("Update successfully");
+        else
+        return Ok("Fail to update infor");
+
+     }
 }
