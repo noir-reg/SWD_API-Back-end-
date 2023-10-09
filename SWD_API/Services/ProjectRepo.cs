@@ -1,4 +1,6 @@
-﻿using SWD_API.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SWD_API.Models;
+using SWD_API.Payload.Response.Project;
 using SWD_API.Repository.Models;
 
 namespace SWD_API.Services
@@ -6,8 +8,6 @@ namespace SWD_API.Services
     public class ProjectRepo : IProjectRepo
     {
         private readonly SWDProjectContext _context = new();
-
-
         public List<ProjectModel> GetAll()
         {
             //throw new NotImplementedException();
@@ -48,5 +48,18 @@ namespace SWD_API.Services
             }
             return null;
         }
+
+        public async Task<List<GetInternProjectResponse>> GetInternProjects(Guid id)
+        {
+            var list=await _context.InternProjectMappings.Where(x=>x.InternId.Equals(id)).Include(x=>x.Project).Select(x=>new GetInternProjectResponse
+            {
+                Id= x.Id,
+                ProjectId= x.ProjectId,
+                ProjectName=x.Project==null?null:x.Project.Name,
+                UpdateTime= x.UpdateTime
+            }).ToListAsync();
+            return list;
+        }
+        
     }
 }

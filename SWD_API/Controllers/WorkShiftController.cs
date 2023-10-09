@@ -16,10 +16,11 @@ namespace SWD_API.Controllers
         {
             _workShiftRepo = workShiftRepo;
         }
+             
 
         [Authorize(Roles = RoleConst.TeamLeader + "," + RoleConst.Intern)]
         [HttpGet]
-        public IActionResult getAll()
+        public IActionResult GetAll()
         {
             try
             {
@@ -29,6 +30,23 @@ namespace SWD_API.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [Authorize(Roles = RoleConst.TeamLeader + "," + RoleConst.Intern)]
+        [HttpGet]
+        public async Task <IActionResult> GetById(Guid id)
+        {
+            var result=await _workShiftRepo.GetById(id);
+            return Ok(result);
+        }
+
+
+        [Authorize(Roles = RoleConst.TeamLeader + "," + RoleConst.Intern)]
+        [HttpGet("intern")]
+        public async Task<IActionResult> GetInternWorkshifts(Guid id)
+        { 
+            var result=await _workShiftRepo.GetInternWorkShifts(id);
+            return Ok(result);
         }
     }
 }

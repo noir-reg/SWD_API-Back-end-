@@ -21,7 +21,7 @@ public class UniversityController : ControllerBase
     }
 
     // [AllowAnonymous]
-    //[Authorize(Roles =RoleConst.Admin)]
+    [Authorize(Roles =RoleConst.Admin)]
     [HttpGet]
     [Route("count")]
     public async Task<ActionResult> CountUniversities()
@@ -30,7 +30,7 @@ public class UniversityController : ControllerBase
         return Ok(count);
     }
 
-    [Authorize(Roles =RoleConst.Admin)]
+    [Authorize(Roles =RoleConst.Admin+","+RoleConst.Intern)]
     [HttpGet]
     public IActionResult GetAll()
     {

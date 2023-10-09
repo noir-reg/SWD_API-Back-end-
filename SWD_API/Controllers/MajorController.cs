@@ -19,7 +19,7 @@ namespace SWD_API.Controllers
             _majorRepo = majorRepo;
         }
 
-        [Authorize(Roles = RoleConst.Admin)]
+        [Authorize(Roles = RoleConst.Admin+","+RoleConst.Intern)]
         [HttpGet]
         public IActionResult GetAll()
         {

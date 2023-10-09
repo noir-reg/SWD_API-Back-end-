@@ -17,9 +17,9 @@ namespace SWD_API.Controllers
             _attendanceRepo = attendanceRepo;
         }
 
-        [Authorize(Roles = RoleConst.TeamLeader + "," + RoleConst.Intern)]
+        [Authorize(Roles =RoleConst.Admin)]
         [HttpGet]
-        public IActionResult getAll()
+        public IActionResult GetAll()
         {
             try
             {
@@ -30,6 +30,12 @@ namespace SWD_API.Controllers
                 return BadRequest();
             }
         }
-
+        [Authorize(Roles=RoleConst.Intern+","+RoleConst.TeamLeader)]
+        [HttpGet("intern")]
+        public async Task<IActionResult> GetInternAttendances(Guid id)
+        {
+            var result=await _attendanceRepo.GetInternAttendances(id);
+            return Ok(result);
+        }
     }
 }
