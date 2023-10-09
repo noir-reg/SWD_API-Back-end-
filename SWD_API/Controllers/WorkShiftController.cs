@@ -33,7 +33,7 @@ namespace SWD_API.Controllers
         }
 
         [Authorize(Roles = RoleConst.TeamLeader + "," + RoleConst.Intern)]
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task <IActionResult> GetById(Guid id)
         {
             var result=await _workShiftRepo.GetById(id);
