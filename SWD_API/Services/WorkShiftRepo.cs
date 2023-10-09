@@ -46,11 +46,12 @@ namespace SWD_API.Services
 
         public async Task<List<GetInternWorkShiftResponse>> GetInternWorkShifts(Guid id)
         {
-            var list = await _context.InternWorkShifts.Where(x => x.InternId == id).Select(x => new GetInternWorkShiftResponse
+            var list = await _context.InternWorkShifts.Where(x => x.InternId == id).Include(x=>x.WorkShift).Select(x => new GetInternWorkShiftResponse
             {
                 Id = x.Id,
                 WorkShiftId = x.WorkShiftId,
                 UpdateTime = x.UpdateTime,
+                WorkingDate=x.WorkShift==null?null:x.WorkShift.Date,
                 CheckIn = x.CheckIn,
                 CheckOut = x.CheckOut
 
