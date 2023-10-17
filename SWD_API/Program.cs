@@ -22,6 +22,7 @@ namespace WebApplication1
             builder.Services.AddScoped<IWorkShiftRepo, WorkShiftRepo>();
             builder.Services.AddScoped<IInternRepo, InternRepo>();
             builder.Services.AddScoped<IMajorRepo, MajorRepo>();
+            builder.Services.AddScoped<ISemesterRepo, SemesterRepo>();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

@@ -8,6 +8,7 @@ namespace SWD_API.Services
     public class ProjectRepo : IProjectRepo
     {
         private readonly SWDProjectContext _context = new();
+        public static int PAGE_SIZE { get; set; } = 5;
         public List<ProjectModel> GetAll()
         {
             //throw new NotImplementedException();
@@ -60,6 +61,47 @@ namespace SWD_API.Services
             }).ToListAsync();
             return list;
         }
-        
+
+        public List<ProjectModel> GetValue(string? search, string? sortbyname, int page=1)
+        {
+            //throw new NotImplementedException();
+            var value = _context.Projects.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                value = value.Where(pro => pro.Name.Contains(search));
+            }
+
+            value = value.OrderBy(pro => pro.Name);
+
+            if (!string.IsNullOrEmpty(sortbyname))
+            {
+                switch (sortbyname)
+                {
+                    case "name_asc":
+                        value = value.OrderBy(pro =>
+                        pro.Name); break;
+                    case "name_desc":
+                        value = value.OrderByDescending(pro =>
+                        pro.Name); break;
+                }
+            }
+
+            value = value.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE);
+
+            var result = value.Select(pro => new ProjectModel
+            {
+                Id = pro.Id,
+                Name = pro.Name,
+                Description = pro.Description,
+                Code = pro.Code,
+                Status = pro.Status,
+                StartDate = pro.StartDate,
+                EndDate = pro.EndDate,
+                UpdateTime = pro.UpdateTime
+            });
+
+            return result.ToList();
+        }
     }
 }
