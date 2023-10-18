@@ -44,5 +44,13 @@ namespace SWD_API.Controllers
                 return BadRequest();
             }
         }
+        [Authorize(Roles = RoleConst.TeamLeader)]
+        [HttpGet]
+        [Route("date/{workShiftDate}")]
+        public async Task<IActionResult> GetInternListByWorkShiftDate(Guid teamLeaderId, [FromRoute] string workShiftDate)
+        {
+            var result = await _internRepo.GetInternListByWorkShiftDate(teamLeaderId, workShiftDate);
+            return Ok(result);
+        }
     }
 }

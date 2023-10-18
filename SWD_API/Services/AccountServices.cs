@@ -99,6 +99,30 @@ namespace SWD_API.Services
             }
         }
 
+        public async Task<IList<GetAccountResponse>>? GetTeamMembers(Guid teamLeaderId)
+        {
+            var teamID = _db.Teams.Where(x => x.TeamLeaderId == teamLeaderId).Select(x => x.Id).FirstOrDefault();
+            var list = await _db.Interns.Where(x => x.TeamId == teamID).Include(x => x.University).Include(x => x.Major)
+                .Include(x => x.Team).Include(x => x.InternshipSemester).Select(x => new GetAccountResponse
+                {
+                    Id = x.Id,
+                    FullName = x.FullName,
+                    PhoneNumber = x.PhoneNumber,
+                    Dob = x.Dob,
+                    Major = x.Major == null ? null : x.Major.Name,
+                    University = x.University == null ? null : x.University.Name,
+                    Team = x.Team == null ? null : x.Team.Name,
+                    InternshipSemester = x.InternshipSemester == null ? null : x.InternshipSemester.Name,
+                    Gender = x.Gender,
+                    Role = x.Role,
+                    Email = x.Email,
+                    Status = x.Status
+
+
+                }).ToListAsync();
+            return list;
+        }
+
         public async Task<LoginResponse>? Login(string email)
         {
             var intern = await _db.Interns.Where(x => x.Email.Equals(email)).Include(x => x.University).Include(x => x.Major)
@@ -244,9 +268,9 @@ namespace SWD_API.Services
             if (intern != null)
             {
                 var newName = updateInternInforRequest.FullName.IsNullOrEmpty() ? intern.FullName : updateInternInforRequest.FullName;
-                var newUniversityId = updateInternInforRequest.UniversityId.IsNullOrEmpty() ? intern.UniversityId :Guid.Parse( updateInternInforRequest.UniversityId);
+                var newUniversityId = updateInternInforRequest.UniversityId.IsNullOrEmpty() ? intern.UniversityId : Guid.Parse(updateInternInforRequest.UniversityId);
                 var newDOB = updateInternInforRequest.DOB.IsNullOrEmpty() ? intern.Dob : DateTime.Parse(updateInternInforRequest.DOB);
-                var newGender = updateInternInforRequest.Gender.IsNullOrEmpty() ? intern.Gender : int.Parse( updateInternInforRequest.Gender);
+                var newGender = updateInternInforRequest.Gender.IsNullOrEmpty() ? intern.Gender : int.Parse(updateInternInforRequest.Gender);
                 var newPhoneNumber = updateInternInforRequest.PhoneNumber.IsNullOrEmpty() ? intern.PhoneNumber : updateInternInforRequest.PhoneNumber;
                 var newMajorId = updateInternInforRequest.MajorId.IsNullOrEmpty() ? intern.MajorId : Guid.Parse(updateInternInforRequest.MajorId);
                 intern.FullName = newName;

@@ -10,6 +10,7 @@ namespace SWD_API.Services
         public Task< GetAccountResponse>? GetAcccountDetail(GetAccountRequest getAccountRequest);
         public Task<bool> UpdateAccountStatus(UpdateAccountStatusRequest updateAcccountStatusRequest);
         public Task<bool> UpdateInternInfor(UpdateInternInforRequest updateInternInforRequest);
+        public Task<IList<GetAccountResponse>>? GetTeamMembers(Guid teamLeaderId);
 
     }
 }

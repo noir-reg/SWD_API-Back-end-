@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using SWD_API.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WebApplication1
 {
@@ -15,8 +16,8 @@ namespace WebApplication1
             // Add services to the container.
             builder.Services.AddSingleton<IAccountServices, AccountServices>();
             builder.Services.AddSingleton<IUniversityServices, UniversityServices>();
-            builder.Services.AddScoped<IAccountServices,AccountServices>();
-            builder.Services.AddScoped<IUniversityServices,UniversityServices>();
+            builder.Services.AddScoped<IAccountServices, AccountServices>();
+            builder.Services.AddScoped<IUniversityServices, UniversityServices>();
             builder.Services.AddScoped<IProjectRepo, ProjectRepo>();
             builder.Services.AddScoped<IAttendanceRepo, AttendanceRepo>();
             builder.Services.AddScoped<IWorkShiftRepo, WorkShiftRepo>();
@@ -67,7 +68,11 @@ namespace WebApplication1
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
             });
+            builder.Services.AddCors(options
 
+                     => options.AddDefaultPolicy(policy
+
+                     => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 
             var app = builder.Build();
@@ -79,9 +84,10 @@ namespace WebApplication1
             app.UseSwaggerUI();
             //   }
 
-            app.UseHttpsRedirection();
-
+           
             
+            app.UseCors();
+
             app.UseAuthentication();
             app.UseAuthorization();
 

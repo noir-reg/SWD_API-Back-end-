@@ -1,4 +1,6 @@
-﻿using SWD_API.Repository.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SWD_API.Payload.Response.Account;
+using SWD_API.Repository.Models;
 
 namespace SWD_API.Services
 {
@@ -54,6 +56,33 @@ namespace SWD_API.Services
                 };
             }
             return null;
+        }
+
+        
+
+        public async Task<IList<GetAccountResponse>> GetInternListByWorkShiftDate(Guid teamLeaderId, string workShiftDate)
+        {
+            var teamID = _context.Teams.Where(x => x.TeamLeaderId == teamLeaderId).Select(x => x.Id).FirstOrDefault();
+            var wsId = await _context.WorkShifts.Where(x => DateOnly.FromDateTime(x.Date) == DateOnly.Parse(workShiftDate)&&x.TeamId==teamID).Select(x=>x.Id).FirstOrDefaultAsync();
+            var list = await _context.Interns.Where(x => x.TeamId == teamID).Include(x => x.University).Include(x => x.Major)
+               .Include(x => x.Team).Include(x => x.InternshipSemester).Select(x => new GetAccountResponse
+               {
+                   Id = x.Id,
+                   FullName = x.FullName,
+                   PhoneNumber = x.PhoneNumber,
+                   Dob = x.Dob,
+                   Major = x.Major == null ? null : x.Major.Name,
+                   University = x.University == null ? null : x.University.Name,
+                   Team = x.Team == null ? null : x.Team.Name,
+                   InternshipSemester = x.InternshipSemester == null ? null : x.InternshipSemester.Name,
+                   Gender = x.Gender,
+                   Role = x.Role,
+                   Email = x.Email,
+                   Status = x.Status
+
+
+               }).ToListAsync();
+            return list;
         }
     }
 }

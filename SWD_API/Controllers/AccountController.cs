@@ -78,4 +78,13 @@ public class AccountController : ControllerBase
         return Ok("Fail to update infor");
 
      }
+    [Authorize(Roles = RoleConst.TeamLeader)]
+    [HttpGet]
+    [Route("team/members")]
+    public async Task<IActionResult> GetTeamMembers(Guid teamLeaderId)
+    {
+        var result = await _service.GetTeamMembers(teamLeaderId);
+        return Ok(result);
+    }
+   
 }
